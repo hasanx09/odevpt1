@@ -1,0 +1,118 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("C# Otopark'a hoş geldiniz!\n");
+
+        while (true)
+        {
+            Console.Write("Araç türünü girin (o - Otomobil, k - Kamyon, i - Iş makinası) veya çıkmak için 'q' basın: ");
+            string vehicle = Console.ReadLine();
+
+            if (vehicle == "q")
+            {
+                Console.WriteLine("Tekrar bekleriz. Hoşça kalın!");
+                break;
+            }
+
+            Console.Write("Kaç saat kalacak?: ");
+            if (int.TryParse(Console.ReadLine(), out int stayHours))
+            {
+                int totalFee = CalculateParkingFee(vehicle, stayHours);
+                Console.WriteLine($"Araç {stayHours} saat kalırsa toplam ücret: {totalFee} TL\n");
+            }
+            else
+            {
+                Console.WriteLine("Geçerli bir saat sayısı giriniz.");
+            }
+        }
+
+        Console.WriteLine("C# Otopark'tan çıkılıyor...");
+    }
+
+    static int CalculateParkingFee(string vehicleType, int hours)
+    {
+        int baseFee, additionalFee;
+
+        switch (vehicleType)
+        {
+            case "o":
+                if (hours <= 2)
+                {
+                    return 5;
+                }
+                else if (hours <= 10)
+                {
+                    return 5 + (hours - 2) * 1;
+                }
+                else
+                {
+                    baseFee = 13;
+                    if (hours <= 24)
+                    {
+                        return baseFee;
+                    }
+                    else
+                    {
+                        int nextDayHours = hours - 24;
+                        if (nextDayHours <= 2)
+                        {
+                            return baseFee + 5;
+                        }
+                        else
+                        {
+                            return baseFee + 5 + (nextDayHours - 2);
+                        }
+                    }
+                }
+            case "k":
+                if (hours <= 2)
+                {
+                    return 8;
+                }
+                else if (hours <= 8)
+                {
+                    return 8 + (hours - 2) * 2;
+                }
+                else
+                {
+                    baseFee = 20;
+                    if (hours <= 24)
+                    {
+                        return baseFee;
+                    }
+                    else
+                    {
+                        int nextDayHours = hours - 24;
+                        return baseFee + nextDayHours;
+                    }
+                }
+            case "i":
+                if (hours <= 2)
+                {
+                    return 12;
+                }
+                else if (hours <= 8)
+                {
+                    return 12 + (hours - 2) * 3;
+                }
+                else
+                {
+                    baseFee = 27;
+                    if (hours <= 24)
+                    {
+                        return baseFee;
+                    }
+                    else
+                    {
+                        int nextDayHours = hours - 24;
+                        return baseFee + nextDayHours;
+                    }
+                }
+            default:
+                return -1; // Geçersiz araç türü
+        }
+    }
+}
